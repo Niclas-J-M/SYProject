@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "syproject"
+version = "0.1.0"
+description = "A Reinforcement Learning project using the game Scotland Yard"
+authors = ["Niclas <n.j.muller-hof@student.rug.nl>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+gym = "^0.26.2"
+networkx = "^3.4.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
