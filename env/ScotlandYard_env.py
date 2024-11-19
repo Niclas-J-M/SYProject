@@ -26,9 +26,89 @@ class ScotlandYardEnv(gym.Env):
         # Gragh based representation of the board
         board = nx.Graph()
         board.add_nodes_from(range(1, 200))
-        board.add_edge(1, 2, transport="taxi")
-        board.add_edge(2, 3, transport="bus")
-        board.add_edge(3, 4, transport="subway")
+        board.add_edge(1, 8, transport="taxi")
+        board.add_edge(1, 9, transport="taxi")
+        board.add_edge(1, 8, transport="bus")
+        board.add_edge(1, 9, transport="bus")
+        board.add_edge(1, 46, transport="subway")
+
+        board.add_edge(2, 10, transport="taxi")
+        board.add_edge(2, 20, transport="taxi")
+
+        board.add_edge(3, 11, transport="taxi")
+        board.add_edge(3, 12, transport="taxi")
+        board.add_edge(3, 4, transport="taxi")
+        board.add_edge(3, 22, transport="bus")
+        board.add_edge(3, 23, transport="bus")
+
+        board.add_edge(4, 13, transport="taxi")
+        board.add_edge(4, 3, transport="taxi")
+
+        board.add_edge(5, 15, transport="taxi")
+        board.add_edge(5, 16, transport="taxi")
+
+        board.add_edge(6, 29, transport="taxi")
+        board.add_edge(6, 7, transport="taxi")
+
+        board.add_edge(7, 6, transport="taxi")
+        board.add_edge(7, 17, transport="taxi")
+        board.add_edge(7, 42, transport="bus")
+
+        board.add_edge(8, 1, transport="taxi")
+        board.add_edge(8, 18, transport="taxi")
+        board.add_edge(8, 19, transport="taxi")
+
+        board.add_edge(9, 1, transport="taxi")
+        board.add_edge(9, 19, transport="taxi")
+        board.add_edge(9, 20, transport="taxi")
+
+        board.add_edge(10, 2, transport="taxi")
+        board.add_edge(10, 21, transport="taxi")
+        board.add_edge(10, 34, transport="taxi")
+        board.add_edge(10, 11, transport="taxi")
+
+        board.add_edge(11, 3, transport="taxi")
+        board.add_edge(11, 10, transport="taxi")
+        board.add_edge(11, 22, transport="taxi")
+
+        board.add_edge(12, 3, transport="taxi")
+        board.add_edge(12, 23, transport="taxi")
+
+        board.add_edge(13, 4, transport="taxi")
+        board.add_edge(13, 23, transport="taxi")
+        board.add_edge(13, 24, transport="taxi")
+        board.add_edge(13, 14, transport="taxi")
+        board.add_edge(13, 23, transport="bus")
+        board.add_edge(13, 52, transport="bus")
+        board.add_edge(13, 14, transport="bus")
+        board.add_edge(13, 67, transport="subway")
+        board.add_edge(13, 46, transport="subway")
+        board.add_edge(13, 89, transport="subway")
+
+        board.add_edge(14, 13, transport="taxi")
+        board.add_edge(14, 15, transport="taxi")
+        board.add_edge(14, 25, transport="taxi")
+        board.add_edge(14, 13, transport="bus")
+        board.add_edge(14, 15, transport="bus")
+
+        board.add_edge(15, 14, transport="taxi")
+        board.add_edge(15, 5, transport="taxi")
+        board.add_edge(15, 26, transport="taxi")
+        board.add_edge(15, 16, transport="taxi")
+        board.add_edge(15, 14, transport="bus")
+        board.add_edge(15, 29, transport="bus")
+        board.add_edge(15, 41, transport="bus")
+
+        board.add_edge(16, 5, transport="taxi")
+        board.add_edge(16, 15, transport="taxi")
+        board.add_edge(16, 28, transport="taxi")
+        board.add_edge(16, 29, transport="taxi")
+
+        board.add_edge(17, 7, transport="taxi")
+        board.add_edge(17, 30, transport="taxi")
+
+
+
 
         return board
         
