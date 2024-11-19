@@ -2,7 +2,6 @@ import gym
 from gym.envs.registration import register
 from env.ScotlandYard_env import ScotlandYardEnv
 
-
 def main():
     print("hello")
     register(
@@ -11,15 +10,15 @@ def main():
     )
     env = gym.make("ScotlandYard-v0")
 
-    obs = env.reset()
+    obs, info = env.reset()
     done = False
 
-    # Example action for Mister X: Move to node 5 using a taxi
     while not done:
         print("running")
-        action = env.action_space.sample()  # Random action
+        action = env.action_space.sample()  # Random action: (player_id, destination, transport_type)
         obs, reward, done, info = env.step(action)
         env.render()
+        print(f"Action: {action}, Reward: {reward}")
 
     env.close()
 

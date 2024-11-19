@@ -2,6 +2,8 @@ import gym
 from gym import spaces
 import numpy as np
 import networkx as nx
+from gym.spaces import MultiDiscrete
+
 
 class ScotlandYardEnv(gym.Env):
     def __init__(self):
@@ -11,7 +13,9 @@ class ScotlandYardEnv(gym.Env):
         self.board = self.create_board()
 
         #Actions and observations
-        self.action_space = spaces.Discrete(200)
+        # Example action space: (player_id, destination, transport_type)
+        self.action_space = MultiDiscrete([6, 200, 3])  # 6 players (Mister X + 5 detectives), 200 locations, 3 transport types
+
         self.observation_space = spaces.Box(
             low=0, high=1, shape=(500,), dtype=np.float32
         ) 
@@ -27,16 +31,17 @@ class ScotlandYardEnv(gym.Env):
         board.add_edge(3, 4, transport="subway")
 
         return board
-    
-    def reset(self):
-        # Reset the environment to its initial state
+        
+    def reset(self, seed=None, options=None):
+        super().reset(seed=seed)  # Use the new Gym reset functionality
         self.mister_x_position = np.random.randint(1, 200)
         self.detectives_positions = [np.random.randint(1, 200) for _ in range(5)]
         self.mister_x_tickets = {"taxi": 4, "bus": 3, "subway": 3}
         self.detectives_tickets = [{"taxi": 10, "bus": 8, "subway": 4} for _ in range(5)]
         self.current_turn = 1
         self.done = False
-        return self.get_observation()
+        return self.get_observation(), {}  # Return observation and empty info dictionary
+
     
     def step(self, action):
         """
@@ -58,6 +63,8 @@ class ScotlandYardEnv(gym.Env):
             raise ValueError("Game has already ended. Reset the environment to start a new game.")
 
         player_id, destination, transport_type = action
+        transport_map = {0: "taxi", 1: "bus", 2: "subway"}  # Map transport_type to string
+        transport_type = transport_map[transport_type]
 
         # Validate action
         if player_id == "Mister X":
@@ -112,12 +119,16 @@ class ScotlandYardEnv(gym.Env):
             },
             "turn": self.current_turn,
         }
-        return self.encode_state(state)
+        encoded_state = self.encode_state(state)
+    
+        # Normalize positions to fit within [0, 1] if observation_space expects it
+        encoded_state /= 200  # Assuming max location index is 200
+        return encoded_state
     
     def encode_state(self, state):
         # Encode the state into a numerical format for RL agents
         # Example: Flatten positions, tickets, and turn into a vector
-        encoded_state = np.zeros(500)  # Example fixed-size vector
+        encoded_state = np.zeros(500, dtype=np.float32)  # Example fixed-size vector
         encoded_state[0] = state["mister_x_position"]
         for i, pos in enumerate(state["detectives_positions"]):
             encoded_state[1 + i] = pos
