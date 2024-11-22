@@ -1091,26 +1091,57 @@ class ScotlandYardEnv(gym.Env):
         board.add_edge(189, 178, transport="taxi")
         board.add_edge(189, 190, transport="taxi")
 
-        board.add_edge(19, , transport="taxi")
+        board.add_edge(190, 189, transport="taxi")
+        board.add_edge(190, 191, transport="taxi")
+        board.add_edge(190, 176, transport="bus")
+        board.add_edge(190, 180, transport="bus")
+        board.add_edge(190, 191, transport="bus")
 
+        board.add_edge(191, 178, transport="taxi")
+        board.add_edge(191, 179, transport="taxi")
+        board.add_edge(191, 190, transport="taxi")
+        board.add_edge(191, 192, transport="taxi")
+        board.add_edge(191, 163, transport="bus")
+        board.add_edge(191, 165, transport="bus")
+        board.add_edge(191, 190, transport="bus")
 
+        board.add_edge(192, 191, transport="taxi")
+        board.add_edge(192, 194, transport="taxi")
+
+        board.add_edge(193, 180, transport="taxi")
+        board.add_edge(193, 181, transport="taxi")
+        board.add_edge(193, 194, transport="taxi")
+
+        board.add_edge(194, 192, transport="taxi")
+        board.add_edge(194, 193, transport="taxi")
+        board.add_edge(194, 195, transport="taxi")
+
+        board.add_edge(195, 182, transport="taxi")
+        board.add_edge(195, 194, transport="taxi")
+        board.add_edge(195, 197, transport="taxi")
+
+        board.add_edge(196, 183, transport="taxi")
+        board.add_edge(196, 184, transport="taxi")
+        board.add_edge(196, 197, transport="taxi")
+
+        board.add_edge(197, 184, transport="taxi")
+        board.add_edge(197, 195, transport="taxi")
+        board.add_edge(197, 196, transport="taxi")
+
+        board.add_edge(198, 186, transport="taxi")
+        board.add_edge(198, 187, transport="taxi")
+
+        board.add_edge(199, 188, transport="taxi")
+        board.add_edge(199, 200, transport="taxi")
+        board.add_edge(199, 159, transport="bus")
+        board.add_edge(199, 161, transport="bus")
+        board.add_edge(199, 185, transport="bus")
+        board.add_edge(199, 187, transport="bus")
+
+        board.add_edge(200, 173, transport="taxi")
+        board.add_edge(200, 175, transport="taxi")
+        board.add_edge(200, 199, transport="taxi")
         
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         return board
         
     def reset(self, seed=None, options=None):
