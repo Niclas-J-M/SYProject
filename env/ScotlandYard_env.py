@@ -617,6 +617,70 @@ class ScotlandYardEnv(gym.Env):
         board.add_edge(107, 72, transport="taxi")
         board.add_edge(107, 136, transport="taxi")
 
+        board.add_edge(109, 96, transport="taxi")
+        board.add_edge(109, 97, transport="taxi")
+        board.add_edge(109, 110, transport="taxi")
+        board.add_edge(109, 124, transport="taxi")
+
+        board.add_edge(110, 98, transport="taxi")
+        board.add_edge(110, 99, transport="taxi")
+        board.add_edge(110, 109, transport="taxi")
+        board.add_edge(110, 111, transport="taxi")
+
+        board.add_edge(111, 110, transport="taxi")
+        board.add_edge(111, 112, transport="taxi")
+        board.add_edge(111, 124, transport="taxi")
+        board.add_edge(111, 100, transport="bus")
+        board.add_edge(111, 124, transport="bus")
+        board.add_edge(111, 79, transport="subway")
+        board.add_edge(111, 153, transport="subway")
+        board.add_edge(111, 163, transport="subway")
+
+        board.add_edge(112, 100, transport="taxi")
+        board.add_edge(112, 111, transport="taxi")
+        board.add_edge(112, 125, transport="taxi")
+
+        board.add_edge(113, 100, transport="taxi")
+        board.add_edge(113, 114, transport="taxi")
+        board.add_edge(113, 125, transport="taxi")
+
+        board.add_edge(114, 101, transport="taxi")
+        board.add_edge(114, 113, transport="taxi")
+        board.add_edge(114, 115, transport="taxi")
+        board.add_edge(114, 126, transport="taxi")
+        board.add_edge(114, 131, transport="taxi")
+        board.add_edge(114, 132, transport="taxi")
+
+        board.add_edge(115, 102, transport="taxi")
+        board.add_edge(115, 114, transport="taxi")
+        board.add_edge(115, 126, transport="taxi")
+        board.add_edge(115, 127, transport="taxi")
+
+        board.add_edge(116, 104, transport="taxi")
+        board.add_edge(116, 117, transport="taxi")
+        board.add_edge(116, 127, transport="taxi")
+        board.add_edge(116, 128, transport="taxi")
+        board.add_edge(116, 86, transport="bus")
+        board.add_edge(116, 118, transport="bus")
+        board.add_edge(116, 127, transport="bus")
+        board.add_edge(116, 142, transport="bus")
+
+        board.add_edge(117, 88, transport="taxi")
+        board.add_edge(117, 116, transport="taxi")
+        board.add_edge(117, 118, transport="taxi")
+        board.add_edge(117, 129, transport="taxi")
+
+        board.add_edge(118, 105, transport="taxi")
+        board.add_edge(118, 117, transport="taxi")
+        board.add_edge(118, 119, transport="taxi")
+        board.add_edge(118, 105, transport="bus")
+        board.add_edge(118, 116, transport="bus")
+        board.add_edge(118, 135, transport="bus")
+
+        board.add_edge(119, 107, transport="taxi")
+        board.add_edge(119, 118, transport="taxi")
+        board.add_edge(119, 136, transport="taxi")
+
 
         return board
         
