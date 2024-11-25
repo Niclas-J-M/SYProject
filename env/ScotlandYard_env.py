@@ -1146,8 +1146,10 @@ class ScotlandYardEnv(gym.Env):
         
     def reset(self, seed=None, options=None):
         super().reset(seed=seed)  # Use the new Gym reset functionality
-        self.mister_x_position = np.random.randint(1, 200)
-        self.detectives_positions = [np.random.randint(1, 200) for _ in range(5)]
+        valid_nodes = set(self.board.nodes) - {108}
+
+        self.mister_x_position = np.random.choice(list(valid_nodes))
+        self.detectives_positions = [np.random.choice(list(valid_nodes)) for _ in range(5)]
         self.mister_x_tickets = {"taxi": 4, "bus": 3, "subway": 3}
         self.detectives_tickets = [{"taxi": 10, "bus": 8, "subway": 4} for _ in range(5)]
         self.current_turn = 1
