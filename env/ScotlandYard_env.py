@@ -1,8 +1,8 @@
-import gym
-from gym import spaces
+import gymnasium as gym
+from gymnasium import spaces
 import numpy as np
 import networkx as nx
-from gym.spaces import MultiDiscrete
+from gymnasium.spaces import MultiDiscrete
 
 
 class ScotlandYardEnv(gym.Env):
@@ -1177,16 +1177,22 @@ class ScotlandYardEnv(gym.Env):
             raise ValueError("Game has already ended. Reset the environment to start a new game.")
 
         player_id, destination, transport_type = action
-        transport_map = {0: "taxi", 1: "bus", 2: "subway"}  # Map transport_type to string
-        transport_type = transport_map[transport_type]
+
+        print(player_id, destination, transport_type)
 
         # Validate action
-        if player_id == "Mister X":
+        if player_id == 0:
             current_position = self.mister_x_position
             tickets = self.mister_x_tickets
         else:
-            current_position = self.detectives_positions[player_id]
-            tickets = self.detectives_tickets[player_id]
+            current_position = self.detectives_positions[player_id - 1]
+            tickets = self.detectives_tickets[player_id - 1]
+
+        valid_moves = [
+            (dest, data["transport"])
+            for dest, data in self.board[current_position].items()
+            if tickets[data["transport"]] > 0
+        ]
 
         # Check if the destination is valid
         if not self.board.has_edge(current_position, destination):
@@ -1195,24 +1201,37 @@ class ScotlandYardEnv(gym.Env):
             raise ValueError(f"Invalid transport: {transport_type} not valid between {current_position} and {destination}.")
         if tickets[transport_type] <= 0:
             raise ValueError(f"Insufficient {transport_type} tickets for player {player_id}.")
+            # Check if the action is valid
+        if (destination, transport_type) not in valid_moves:
+            raise ValueError(
+                f"Invalid move for player {player_id}: Cannot move to {destination} via {transport_type} from {current_position}."
+            )
 
         # Update position and deduct ticket
-        if player_id == "Mister X":
+        if player_id == 0:
             self.mister_x_position = destination
             self.mister_x_tickets[transport_type] -= 1
         else:
-            self.detectives_positions[player_id] = destination
-            self.detectives_tickets[player_id][transport_type] -= 1
+            self.detectives_positions[player_id - 1] = destination
+            self.detectives_tickets[player_id - 1][transport_type] -= 1
 
         # Calculate reward
         reward = self.calculate_reward(player_id, destination)
 
         # Check if the game is over
-        self.current_turn += 1
+        if player_id == 5:  # Last detective
+            self.current_turn += 1
+
         self.done = self.check_done()
 
-        # Return updated observation, reward, done, and additional info
-        return self.get_observation(), reward, self.done, {"turn": self.current_turn}
+        observation = self.get_observation()
+        reward = self.calculate_reward(player_id, destination)
+
+        # Split done into terminated and truncated
+        terminated = self.done  # Ended because of success/failure
+        truncated = self.current_turn >= 22  # Ended because max turns reached
+
+        return observation, reward, terminated, truncated, {"turn": self.current_turn}
 
     def calculate_reward(self, player, destination):
         # Define a reward system
@@ -1255,3 +1274,29 @@ class ScotlandYardEnv(gym.Env):
         if self.current_turn >= 22:  # End of game
             return True
         return False
+    
+    def get_valid_actions(self, player_id):
+        """
+        Get all valid actions for a player based on their current position.
+
+        Parameters:
+            player_id: 0 for Mister X, 1-5 for detectives.
+
+        Returns:
+            List of valid actions as (destination, transport_type).
+        """
+        if player_id == 0:  # Mister X
+            current_position = self.mister_x_position
+            tickets = self.mister_x_tickets
+        else:  # Detective
+            current_position = self.detectives_positions[player_id - 1]
+            tickets = self.detectives_tickets[player_id - 1]
+
+        # Get all valid moves from the current position
+        valid_moves = [
+            (dest, data["transport"])
+            for dest, data in self.board[current_position].items()
+            if tickets[data["transport"]] > 0
+        ]
+
+        return valid_moves

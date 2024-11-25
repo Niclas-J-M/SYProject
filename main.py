@@ -1,6 +1,7 @@
-import gym
-from gym.envs.registration import register
+import gymnasium as gym
+from gymnasium.envs.registration import register
 from env.ScotlandYard_env import ScotlandYardEnv
+import numpy as np
 
 def main():
     print("hello")
@@ -14,13 +15,31 @@ def main():
     done = False
 
     while not done:
-        print("running")
-        action = env.action_space.sample()  # Random action: (player_id, destination, transport_type)
-        obs, reward, done, info = env.step(action)
+        # Mister X action
+        valid_actions = env.unwrapped.get_valid_actions(0)
+        action = valid_actions[np.random.randint(len(valid_actions))]  # Random valid action
+        print(env.unwrapped.mister_x_position)
+        print(action)
+        print(*action)
+        obs, reward, terminated, truncated, info = env.step((0, *action))
+        done = terminated or truncated
+        print(f"Mister X took action: {action}, Reward: {reward}")
         env.render()
-        print(f"Action: {action}, Reward: {reward}")
 
-    env.close()
+        if done:
+            break
+
+        # Detectives' actions
+        for detective_id in range(1, 6):
+            valid_actions = env.unwrapped.get_valid_actions(detective_id)
+            if valid_actions:  # Ensure there are valid actions
+                action = valid_actions[np.random.randint(len(valid_actions))]  # Random valid action
+                obs, reward, done, info = env.step((detective_id, *action))
+                print(f"Detective {detective_id} took action: {action}, Reward: {reward}")
+                env.render()
+
+            if done:
+                break
 
 if __name__ == "__main__":
     main()
