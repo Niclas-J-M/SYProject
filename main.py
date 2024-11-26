@@ -27,13 +27,14 @@ def main():
             break
 
         # Detectives' actions
-        for detective_id in range(1, 5):
+        for detective_id in range(1, 6):
             detective_pos = env.unwrapped.detectives_positions[detective_id]
-            print("det pos", detective_pos)
+            print("det id det pos", detective_id, detective_pos)
             valid_actions = env.unwrapped.get_valid_actions(detective_id)
             print("valid actions", valid_actions)
             if valid_actions:  # Ensure there are valid actions
                 action = valid_actions[np.random.randint(len(valid_actions))]  # Random valid action
+                print("action", action)
                 obs, reward, terminated, truncated, info = env.step((detective_id, *action))
                 done = terminated or truncated
                 print(f"Detective {detective_id} took action: {detective_pos} to {action[0]} using {action[1]}, Reward: {reward}")

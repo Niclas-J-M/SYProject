@@ -1149,9 +1149,9 @@ class ScotlandYardEnv(gym.Env):
         valid_nodes = set(self.board.nodes) - {108}
 
         self.mister_x_position = np.random.choice(list(valid_nodes))
-        self.detectives_positions = [np.random.choice(list(valid_nodes)) for _ in range(5)]
-        self.mister_x_tickets = {"taxi": 4, "bus": 3, "subway": 3}
-        self.detectives_tickets = [{"taxi": 10, "bus": 8, "subway": 4} for _ in range(5)]
+        self.detectives_positions = [np.random.choice(list(valid_nodes)) for _ in range(6)]
+        self.mister_x_tickets = {"taxi": 20, "bus": 20, "subway": 20}
+        self.detectives_tickets = [{"taxi": 10, "bus": 8, "subway": 4} for _ in range(6)]
         self.current_turn = 1
         self.done = False
         return self.get_observation(), {}  # Return observation and empty info dictionary
@@ -1185,8 +1185,8 @@ class ScotlandYardEnv(gym.Env):
             current_position = self.mister_x_position
             tickets = self.mister_x_tickets
         else:
-            current_position = self.detectives_positions[player_id - 1]
-            tickets = self.detectives_tickets[player_id - 1]
+            current_position = self.detectives_positions[player_id]
+            tickets = self.detectives_tickets[player_id]
 
         valid_moves = [
             (dest, data["transport"])
@@ -1289,8 +1289,9 @@ class ScotlandYardEnv(gym.Env):
             current_position = self.mister_x_position
             tickets = self.mister_x_tickets
         else:  # Detective
-            current_position = self.detectives_positions[player_id - 1]
-            tickets = self.detectives_tickets[player_id - 1]
+            current_position = self.detectives_positions[player_id]
+            print("cur pos", current_position)
+            tickets = self.detectives_tickets[player_id]
 
         # Get all valid moves from the current position
         valid_moves = [
