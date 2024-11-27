@@ -19,8 +19,10 @@ def main():
         valid_actions = env.unwrapped.get_valid_actions(0)
         action = valid_actions[np.random.randint(len(valid_actions))]  # Random valid action
         obs, reward, terminated, truncated, info = env.step((0, *action))
-        done = terminated or truncated
         print(f"Mister X took action: {mister_x_pos} to {action[0]} using {action[1]}, Reward: {reward}")
+        env.render()
+        done = terminated or truncated
+
         
 
         if done:
@@ -36,12 +38,15 @@ def main():
                 action = valid_actions[np.random.randint(len(valid_actions))]  # Random valid action
                 print("action", action)
                 obs, reward, terminated, truncated, info = env.step((detective_id, *action))
-                done = terminated or truncated
                 print(f"Detective {detective_id} took action: {detective_pos} to {action[0]} using {action[1]}, Reward: {reward}")
+                env.render()
+                done = terminated or truncated
+                
                 
 
             if done:
                 break
+    env.close()
 
 if __name__ == "__main__":
     main()

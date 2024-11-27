@@ -3,6 +3,7 @@ from gymnasium import spaces
 import numpy as np
 import networkx as nx
 from gymnasium.spaces import MultiDiscrete
+import matplotlib.pyplot as plt
 
 
 class ScotlandYardEnv(gym.Env):
@@ -1301,3 +1302,59 @@ class ScotlandYardEnv(gym.Env):
         ]
 
         return valid_moves
+    
+    def render(self, mode="human"):
+        """
+        Visualize the current state of the board and agent positions.
+
+        Parameters:
+            mode: The rendering mode (default is "human").
+        """
+        # Create a color map for transportation types
+        if mode is None:
+            mode = self.render_mode
+
+        if mode == "human":
+            # Render using matplotlib as visual output
+            color_map = {"taxi": "yellow", "bus": "blue", "subway": "green"}
+            edge_colors = [
+                color_map[self.board[u][v]["transport"]] for u, v in self.board.edges
+            ]
+
+            # Draw the graph
+            pos = nx.spring_layout(self.board, seed=42)  # Fixed layout for consistency
+            plt.figure(figsize=(12, 8))
+            nx.draw(
+                self.board,
+                pos,
+                node_size=200,
+                with_labels=True,
+                edge_color=edge_colors,
+                edge_cmap=plt.cm.Paired,
+            )
+
+            # Highlight the positions of Mister X and detectives
+            nx.draw_networkx_nodes(
+                self.board,
+                pos,
+                nodelist=[self.mister_x_position],
+                node_color="black",
+                node_size=300,
+                label="Mister X",
+            )
+            nx.draw_networkx_nodes(
+                self.board,
+                pos,
+                nodelist=self.detectives_positions,
+                node_color="red",
+                node_size=300,
+                label="Detectives",
+            )
+
+            # Add legend
+            plt.legend(
+                ["Taxi", "Bus", "Subway", "Mister X", "Detectives"], loc="upper left"
+            )
+            plt.title(f"Turn: {self.current_turn}")
+            plt.show()
+
